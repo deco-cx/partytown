@@ -1,6 +1,6 @@
 import { Plugin } from "$fresh/server.ts";
 
-import { partytownSnippet } from "npm:@builder.io/partytown@0.7.0/integration";
+import { partytownSnippet } from "https://esm.sh/@builder.io/partytown@0.7.1/integration";
 
 import { storage } from "./shared.ts";
 
