@@ -1,6 +1,10 @@
-import { Script } from "../Script.tsx";
+import Script from "../Script.tsx";
 
-export const Jitsu = (props: { "data-key": string }) => {
+interface Props {
+  "data-key": string;
+}
+
+const Jitsu = (props: Props) => {
   return (
     <>
       <Script
@@ -18,3 +22,5 @@ export const Jitsu = (props: { "data-key": string }) => {
     </>
   );
 };
+
+export default Jitsu;

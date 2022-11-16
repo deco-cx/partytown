@@ -1,8 +1,10 @@
-import { Script } from "../Script.tsx";
+import Script from "../Script.tsx";
 
-export const GoogleTagManager = (
-  { trackingId = "" }: { trackingId: string },
-) => {
+interface Props {
+  trackingId: string;
+}
+
+const GoogleTagManager = ({ trackingId = "" }: Props) => {
   return (
     <>
       <Script
@@ -26,3 +28,5 @@ export const GoogleTagManager = (
     </>
   );
 };
+
+export default GoogleTagManager;

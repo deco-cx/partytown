@@ -6,7 +6,7 @@ interface Props extends JSX.HTMLAttributes<HTMLScriptElement> {
   forward?: string[];
 }
 
-export const Script = ({
+const Script = ({
   forward = [],
   ...scriptProps
 }: Props) => {
@@ -21,3 +21,5 @@ export const Script = ({
     </Head>
   );
 };
+
+export default Script;
