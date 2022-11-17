@@ -1,7 +1,4 @@
-import {
-  ensureDirSync,
-  existsSync,
-} from "https://deno.land/std@0.164.0/fs/mod.ts";
+import { ensureDirSync, exists } from "https://deno.land/std@0.164.0/fs/mod.ts";
 import { join } from "https://deno.land/std@0.164.0/path/mod.ts";
 
 const partytownUrlPrefix = "https://unpkg.com/@builder.io/partytown@0/lib/";
@@ -18,35 +15,38 @@ const partytownDebugFiles = [
   "/debug/partytown-ww-sw.js",
 ];
 
-async function fetchAndWriteFiles(files: string[], dest: string) {
-  const unpkFiles = await Promise.all(
-    files.map((file) =>
-      fetch(`${partytownUrlPrefix}/${file}`).then((res) => res.text())
-    ),
-  );
+const fetchFileText = async (file: string) => {
+  const response = await fetch(file);
 
-  files.forEach((fileName, index) => {
-    Deno.writeTextFileSync(
-      join(dest, fileName),
-      unpkFiles[index],
-      { create: true },
-    );
-  });
-}
+  if (!response.ok) {
+    throw new Error(`Error while fetching ${file}`);
+  }
+
+  return response.text();
+};
+
+const fetchAndWriteFiles = (filenames: string[], dest: string) =>
+  Promise.all(filenames.map(async (filename) => {
+    const remoteUrl = `${partytownUrlPrefix}/${filename}`;
+    const localUrl = join(dest, filename);
+
+    const pathExists = await exists(localUrl);
+
+    if (pathExists) {
+      return;
+    }
+
+    const txt = await fetchFileText(remoteUrl);
+
+    return Deno.writeTextFile(localUrl, txt, { create: true });
+  }));
 
 export const copyLibFiles = async () => {
   const fullPathDest = join(Deno.cwd(), "static/~partytown");
-
-  if (!existsSync(fullPathDest)) {
-    ensureDirSync(fullPathDest);
-
-    await fetchAndWriteFiles(partytownFiles, fullPathDest);
-  }
+  ensureDirSync(fullPathDest);
+  await fetchAndWriteFiles(partytownFiles, fullPathDest);
 
   const debugFolder = join(fullPathDest, "./debug/");
-  if (!existsSync(debugFolder)) {
-    ensureDirSync(debugFolder);
-
-    await fetchAndWriteFiles(partytownDebugFiles, fullPathDest);
-  }
+  ensureDirSync(debugFolder);
+  await fetchAndWriteFiles(partytownDebugFiles, fullPathDest);
 };
