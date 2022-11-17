@@ -1,4 +1,4 @@
-import { ensureDirSync, exists } from "https://deno.land/std@0.164.0/fs/mod.ts";
+import { ensureDir, exists } from "https://deno.land/std@0.164.0/fs/mod.ts";
 import { join } from "https://deno.land/std@0.164.0/path/mod.ts";
 
 const partytownUrlPrefix = "https://unpkg.com/@builder.io/partytown@0/lib/";
@@ -43,10 +43,10 @@ const fetchAndWriteFiles = (filenames: string[], dest: string) =>
 
 export const copyLibFiles = async () => {
   const fullPathDest = join(Deno.cwd(), "static/~partytown");
-  ensureDirSync(fullPathDest);
+  await ensureDir(fullPathDest);
   await fetchAndWriteFiles(partytownFiles, fullPathDest);
 
   const debugFolder = join(fullPathDest, "./debug/");
-  ensureDirSync(debugFolder);
+  await ensureDir(debugFolder);
   await fetchAndWriteFiles(partytownDebugFiles, fullPathDest);
 };

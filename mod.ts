@@ -9,11 +9,11 @@ interface Options {
   copyFiles?: boolean;
 }
 
-const partytown = async (
+const partytown = (
   { copyFiles }: Options = {},
-): Promise<Plugin> => {
+): Plugin => {
   if (copyFiles !== false) {
-    await copyLibFiles();
+    copyLibFiles().catch(console.error);
   }
 
   return {
