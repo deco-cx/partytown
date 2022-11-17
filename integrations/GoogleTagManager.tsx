@@ -23,8 +23,7 @@ const GoogleTagManager = ({ trackingId = "" }: Props) => {
         window.gtag("config", "${trackingId}");
       `,
         }}
-      >
-      </Script>
+      />
     </>
   );
 };

@@ -17,8 +17,7 @@ const Jitsu = (props: Props) => {
           __html:
             `window.jitsu = window.jitsu || (function(){(window.jitsuQ = window.jitsuQ || []).push(arguments);})`,
         }}
-      >
-      </Script>
+      />
     </>
   );
 };
