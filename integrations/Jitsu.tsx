@@ -4,18 +4,21 @@ interface Props {
   "data-key": string;
 }
 
+const snippet =
+  `window.jitsu = window.jitsu || (function(){(window.jitsuQ = window.jitsuQ || []).push(arguments);})`;
+
 const Jitsu = (props: Props) => {
   return (
     <>
       <Script
+        forward={["jitsu"]}
         data-key={props["data-key"]}
         src="https://t.jitsu.com/s/lib.js"
       />
       <Script
-        forward={["jitsu"]}
+        type="application/javascript"
         dangerouslySetInnerHTML={{
-          __html:
-            `window.jitsu = window.jitsu || (function(){(window.jitsuQ = window.jitsuQ || []).push(arguments);})`,
+          __html: snippet,
         }}
       />
     </>

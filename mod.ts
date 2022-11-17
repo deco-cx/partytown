@@ -20,8 +20,9 @@ const partytown = (
     name: "partytown",
     entrypoints: {
       "main": `data:application/javascript,export default function(state){
-      window.forward = JSON.stringify(state);
-      ${partytownSnippet()}}`,
+      window.partytown = state;
+      ${partytownSnippet()}
+    }`,
     },
     render(ctx) {
       storage.forward = [];
