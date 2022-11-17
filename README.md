@@ -20,7 +20,7 @@ import partytownPlugin from "https://deno.land/x/partytown/mod.t";
 
 await start(manifest, {
   plugins: [
-    await partytownPlugin(),
+    partytownPlugin(),
   ],
 });
 ```
