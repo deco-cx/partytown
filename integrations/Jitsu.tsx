@@ -2,6 +2,7 @@ import Script from "../Script.tsx";
 
 interface Props {
   "data-key": string;
+  "data-init-only"?: boolean;
 }
 
 const snippet =
@@ -12,8 +13,8 @@ const Jitsu = (props: Props) => {
     <>
       <Script
         forward={["jitsu"]}
-        data-key={props["data-key"]}
         src="https://t.jitsu.com/s/lib.js"
+        {...props}
       />
       <Script
         type="application/javascript"
