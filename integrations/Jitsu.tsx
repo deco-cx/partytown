@@ -2,7 +2,7 @@ import Script from "../Script.tsx";
 
 interface Props {
   "data-key": string;
-  "data-init-only"?: boolean;
+  "data-init-only"?: "true" | "false";
 }
 
 const snippet =
