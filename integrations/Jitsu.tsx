@@ -2,15 +2,13 @@ import Script from "../Script.tsx";
 
 interface Props {
   "data-key": string;
+  "data-init-only"?: boolean;
 }
 
 const snippet =
   `window.jitsu = window.jitsu || (function(){(window.jitsuQ = window.jitsuQ || []).push(arguments);})`;
 
 const Jitsu = (props: Props) => {
-
-  console.log({props})
-
   return (
     <>
       <Script
