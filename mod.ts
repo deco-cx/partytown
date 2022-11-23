@@ -3,7 +3,7 @@ import { Plugin } from "$fresh/server.ts";
 import { partytownSnippet } from "https://esm.sh/@builder.io/partytown@0.7.1/integration";
 
 import { copyLibFiles } from "./copyFiles.ts";
-import { storage } from "./shared.ts";
+import { readForward } from "./shared.ts";
 
 interface Options {
   copyFiles?: boolean;
@@ -25,12 +25,10 @@ const partytown = (
     }`,
     },
     render(ctx) {
-      storage.forward = [];
-
       ctx.render();
 
       return {
-        scripts: [{ entrypoint: "main", state: storage }],
+        scripts: [{ entrypoint: "main", state: readForward() }],
       };
     },
   };

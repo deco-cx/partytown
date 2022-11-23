@@ -7,30 +7,35 @@ interface Props {
 }
 
 const snippet = (trackingId: string) => `
-window.dataLayer = window.dataLayer || [];
-function gtag() {
-  window.dataLayer.push(arguments);
-}
-window.gtag = gtag;
-window.gtag("js", new Date());
-window.gtag("config", "${trackingId}");
+// It is safe to .push in datalayer in here because partytown have already
+// run and made dataLayer.push available in window
+window.gtag = window.gtag || function(){window.dataLayer.push(arguments)};
+
+function init() {
+  window.gtag("js", new Date());
+  window.gtag("config", "${trackingId}");
+};
+
+if (document.readyState === 'complete') {
+  init();
+} else {
+  window.addEventListener('load', init);
+};
 `;
 
-const GoogleTagManager = ({ trackingId = "" }: Props) => {
-  return (
-    <>
-      <Script
-        forward={["gtag"]}
-        src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
-      />
-      <Script
-        type="application/javascript"
-        dangerouslySetInnerHTML={{
-          __html: snippet(trackingId),
-        }}
-      />
-    </>
-  );
-};
+const GoogleTagManager = ({ trackingId = "" }: Props) => (
+  <>
+    <Script
+      forward={["dataLayer.push"]}
+      src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+    />
+    <Script
+      type="application/javascript"
+      dangerouslySetInnerHTML={{
+        __html: snippet(trackingId),
+      }}
+    />
+  </>
+);
 
 export default GoogleTagManager;
