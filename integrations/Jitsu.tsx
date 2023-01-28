@@ -8,12 +8,18 @@ interface Props extends ComponentProps<typeof Script> {
 }
 
 const Jitsu = (props: Props) => (
-  <Script
-    id="jitsu-script"
-    forward={["jitsu"]}
-    src="https://t.jitsu.com/s/lib.js"
-    {...props}
-  />
+  <>
+    <Script
+      id="jitsu-script"
+      forward={["jitsu"]}
+      src="https://t.jitsu.com/s/lib.js"
+      {...props}
+    />
+    {/* Jitsu Doc snippet */}
+    <Script id="jitsu-script-global">
+      {`window.jitsu = window.jitsu || (function(){(window.jitsuQ = window.jitsuQ || []).push(arguments);})`}
+    </Script>
+  </>
 );
 
 export default Jitsu;
