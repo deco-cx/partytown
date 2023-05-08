@@ -10,11 +10,13 @@ import { clearForward, readForward } from "./shared.ts";
 
 interface Options {
   copyFiles?: boolean;
+  proxyUrl?: string;
 }
 
 declare global {
   interface Window {
     partytown: PartytownConfig;
+    ptProxyUrl?: string;
   }
 }
 
@@ -58,7 +60,7 @@ function snippet(state: PartytownConfig) {
 }
 
 const partytown = (
-  { copyFiles }: Options = {},
+  { copyFiles, proxyUrl }: Options = {},
 ): Plugin => {
   if (copyFiles !== false) {
     copyLibFiles().catch(console.error);
@@ -69,6 +71,23 @@ const partytown = (
     entrypoints: {
       "main": `data:application/javascript,export default function(state){
       (${snippet})(state);
+      window.partytown.resolveUrl = function (url, location, type) {
+        const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : 'undefined'};
+
+        if (!proxyUrl) { return url}
+
+        console.log({ proxyUrl });
+
+        if (url.href.includes(proxyUrl)) {
+          return url;
+        }
+        if (type === "script" && proxyUrl) {
+          const finalProxyUrl = new URL(location.origin + proxyUrl);
+          finalProxyUrl.searchParams.append("url", url.href);
+          return finalProxyUrl;
+        }
+        return url;
+      };
       ${partytownSnippet()}
     }`,
     },
@@ -77,7 +96,10 @@ const partytown = (
       ctx.render();
 
       return {
-        scripts: [{ entrypoint: "main", state: readForward() }],
+        scripts: [{
+          entrypoint: "main",
+          state: { ...readForward(), proxyUrl },
+        }],
       };
     },
   };
