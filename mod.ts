@@ -94,7 +94,6 @@ const partytown = (
     render(ctx) {
       clearForward();
       ctx.render();
-
       return {
         scripts: [{
           entrypoint: "main",
