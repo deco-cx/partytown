@@ -75,7 +75,6 @@ const partytown = (
         const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : 'undefined'};
 
         if (!proxyUrl) { return url}
-
         console.log({ proxyUrl });
 
         if (url.href.includes(proxyUrl)) {
