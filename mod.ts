@@ -16,7 +16,6 @@ interface Options {
 declare global {
   interface Window {
     partytown: PartytownConfig;
-    ptProxyUrl?: string;
   }
 }
 
@@ -65,7 +64,7 @@ const partytown = (
   if (copyFiles !== false) {
     copyLibFiles().catch(console.error);
   }
-  
+
   return {
     name: "partytown",
     entrypoints: {
@@ -95,7 +94,7 @@ const partytown = (
       return {
         scripts: [{
           entrypoint: "main",
-          state: { ...readForward(), proxyUrl },
+          state: readForward(),
         }],
       };
     },
