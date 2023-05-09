@@ -65,7 +65,7 @@ const partytown = (
   if (copyFiles !== false) {
     copyLibFiles().catch(console.error);
   }
-
+  
   return {
     name: "partytown",
     entrypoints: {
@@ -74,8 +74,7 @@ const partytown = (
       window.partytown.resolveUrl = function (url, location, type) {
         const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : 'undefined'};
 
-        if (!proxyUrl) { return url}
-        console.log({ proxyUrl });
+        if (!proxyUrl) { return url }
 
         if (url.href.includes(proxyUrl)) {
           return url;
