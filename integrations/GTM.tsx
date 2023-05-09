@@ -4,31 +4,43 @@ interface Props {
   trackingId: string;
 }
 
-const snippet = () => `
-// It is safe to .push in datalayer in here because partytown have already
-// run and made dataLayer.push available in window
-function init() {
-  window.dataLayer.push({'gtm.start':new Date().getTime(), event:'gtm.js'});
+declare global {
+  interface Window {
+    dataLayer: unknown[];
+  }
 }
 
-if (document.readyState === 'complete') {
-  init();
-} else {
-  window.addEventListener('load', init);
-};
-          
-`;
+function snippet() {
+  window.dataLayer = window.dataLayer || [];
+
+  // It is safe to .push in datalayer in here because partytown have already
+  // run and made dataLayer.push available in window
+  function init() {
+    window.dataLayer.push({
+      "gtm.start": new Date().getTime(),
+      event: "gtm.js",
+    });
+  }
+
+  if (document.readyState === "complete") {
+    init();
+  } else {
+    addEventListener("load", init);
+  }
+}
 
 const GoogleTagManager = ({ trackingId = "" }: Props) => (
   <>
     <Script
+      id={`gtm-script-${trackingId}`}
       forward={["dataLayer.push"]}
       src={`https://www.googletagmanager.com/gtm.js?id=${trackingId}`}
     />
     <Script
-      type="application/javascript"
+      id={`gtm-script-global-${trackingId}`}
+      type="module"
       dangerouslySetInnerHTML={{
-        __html: snippet(),
+        __html: `(${snippet})();`,
       }}
     />
   </>

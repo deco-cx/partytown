@@ -2,8 +2,10 @@ declare namespace globalThis {
   let __partytownGlobalOptionsStorage: { forward: string[] };
 }
 
-globalThis.__partytownGlobalOptionsStorage = {
-  forward: [],
+export const clearForward = () => {
+  globalThis.__partytownGlobalOptionsStorage = {
+    forward: [],
+  };
 };
 
 export const collectForward = (forward: string[]) => {
@@ -22,3 +24,5 @@ export const readForward = () => {
     forward,
   };
 };
+
+clearForward();
