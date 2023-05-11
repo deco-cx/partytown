@@ -31,7 +31,6 @@ const Jitsu = (props: Props) => (
     {/* Jitsu Doc snippet */}
     <Script
       id={`jitsu-script-global-${props["data-key"]}`}
-      type="module"
       dangerouslySetInnerHTML={{ __html: `(${snippet})();` }}
     >
     </Script>
