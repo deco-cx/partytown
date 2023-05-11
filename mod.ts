@@ -65,19 +65,21 @@ const partytown = (
     copyLibFiles().catch(console.error);
   }
 
+  // TODO: Remove jitsu verification
   return {
     name: "partytown",
     entrypoints: {
       "main": `data:application/javascript,export default function(state){
       (${snippet})(state);
       window.partytown.resolveUrl = function (url, location, type) {
-        const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : 'undefined'};
+        const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : "undefined"};
 
         if (!proxyUrl) { return url }
 
-        if (url.href.includes(proxyUrl)) {
+        if (url.href.includes(proxyUrl) || url.hostname.includes("jitsu")) {
           return url;
         }
+
         if (type === "script" && proxyUrl) {
           const finalProxyUrl = new URL(location.origin + proxyUrl);
           finalProxyUrl.searchParams.append("url", url.href);
