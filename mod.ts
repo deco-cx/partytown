@@ -59,7 +59,7 @@ function snippet(state: PartytownConfig) {
 }
 
 const partytown = (
-  { copyFiles, proxyUrl }: Options = {},
+  { copyFiles, proxyUrl, mainWindowAccessors }: Options = {},
 ): Plugin => {
   if (copyFiles !== false) {
     copyLibFiles().catch(console.error);
@@ -71,6 +71,7 @@ const partytown = (
     entrypoints: {
       "main": `data:application/javascript,export default function(state){
       (${snippet})(state);
+      window.partytown.mainWindowAccessors = `${JSON.stringify(mainWindowAccessors ?? [])}`;
       window.partytown.resolveUrl = function (url, location, type) {
         const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : "undefined"};
 
