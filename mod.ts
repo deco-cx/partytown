@@ -11,6 +11,7 @@ import { clearForward, readForward } from "./shared.ts";
 interface Options {
   copyFiles?: boolean;
   proxyUrl?: string;
+  mainWindowAccessors?: string[];
 }
 
 declare global {
