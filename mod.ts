@@ -10,6 +10,8 @@ import { clearForward, readForward } from "./shared.ts";
 
 interface Options {
   copyFiles?: boolean;
+  proxyUrl?: string;
+  mainWindowAccessors?: string[];
 }
 
 declare global {
@@ -58,26 +60,46 @@ function snippet(state: PartytownConfig) {
 }
 
 const partytown = (
-  { copyFiles }: Options = {},
+  { copyFiles, proxyUrl, mainWindowAccessors }: Options = {},
 ): Plugin => {
   if (copyFiles !== false) {
     copyLibFiles().catch(console.error);
   }
 
+  // TODO: Remove jitsu verification
   return {
     name: "partytown",
     entrypoints: {
       "main": `data:application/javascript,export default function(state){
       (${snippet})(state);
+      window.partytown.mainWindowAccessors = ${JSON.stringify(mainWindowAccessors ?? [])};
+      window.partytown.resolveUrl = function (url, location, type) {
+        const proxyUrl = ${proxyUrl ? `'${proxyUrl}'` : "undefined"};
+
+        if (!proxyUrl) { return url }
+
+        if (url.href.includes(proxyUrl) || url.hostname.includes("jitsu")) {
+          return url;
+        }
+
+        if (type === "script" && proxyUrl) {
+          const finalProxyUrl = new URL(location.origin + proxyUrl);
+          finalProxyUrl.searchParams.append("url", url.href);
+          return finalProxyUrl;
+        }
+        return url;
+      };
       ${partytownSnippet()}
     }`,
     },
     render(ctx) {
       clearForward();
       ctx.render();
-
       return {
-        scripts: [{ entrypoint: "main", state: readForward() }],
+        scripts: [{
+          entrypoint: "main",
+          state: readForward(),
+        }],
       };
     },
   };
