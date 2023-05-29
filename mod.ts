@@ -20,18 +20,23 @@ declare global {
 
 function snippet(state: PartytownConfig) {
   const params = new URLSearchParams(window.location.search);
+  const disabled = localStorage?.getItem("disablePartytown");
 
   const getState = (): PartytownConfig => {
-    if (params.has("disablePartytown") || params.has("gtm_debug")) {
+    if (params.has("disablePartytown") || params.has("gtm_debug") || disabled) {
       console.debug("🎉 Running partytown scripts on main thread");
 
+      
       document
-        .querySelectorAll('script[type="text/partytown"]')
-        .forEach((node) => {
-          node.remove();
-          node.setAttribute("type", "text/javascript");
-          document.body.appendChild(node);
-        });
+      .querySelectorAll('script[type="text/partytown"]')
+      .forEach((node) => {
+        node.remove();
+        node.setAttribute("type", "text/javascript");
+        document.body.appendChild(node);
+      });
+      
+      localStorage?.setItem("disablePartytown", "true");
+      console.log('Disabling partytown. To enable it again, run: localStorage.setItem("disablePartytown", "")')
 
       return {
         ...state,
