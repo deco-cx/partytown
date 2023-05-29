@@ -1,8 +1,14 @@
 import Script from "../Script.tsx";
 
-interface Props {
+interface Hosted {
   trackingId: string;
 }
+
+interface OnPremises {
+  src: string;
+}
+
+type Props = Hosted | OnPremises;
 
 declare global {
   interface Window {
@@ -29,21 +35,25 @@ function snippet() {
   }
 }
 
-const GoogleTagManager = ({ trackingId = "" }: Props) => (
-  <>
-    <Script
-      id={`gtm-script-${trackingId}`}
-      forward={["dataLayer.push"]}
-      src={`https://www.googletagmanager.com/gtm.js?id=${trackingId}`}
-    />
-    <Script
-      id={`gtm-script-global-${trackingId}`}
-      type="module"
-      dangerouslySetInnerHTML={{
-        __html: `(${snippet})();`,
-      }}
-    />
-  </>
-);
+const isOnPremises = (props: Props): props is OnPremises =>
+  Boolean((props as any).src);
+
+const GoogleTagManager = (props: Props) => {
+  const id = isOnPremises(props) ? props.src : props.trackingId;
+  const src = isOnPremises(props)
+    ? props.src
+    : `https://www.googletagmanager.com/gtm.js?id=${props.trackingId}`;
+
+  return (
+    <>
+      <Script id={`gtm-script-${id}`} forward={["dataLayer.push"]} src={src} />
+      <Script
+        id={`gtm-script-global-${id}`}
+        type="module"
+        dangerouslySetInnerHTML={{ __html: `(${snippet})();` }}
+      />
+    </>
+  );
+};
 
 export default GoogleTagManager;
