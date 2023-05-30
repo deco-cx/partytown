@@ -85,7 +85,7 @@ const partytown = (
           return url;
         }
 
-        if (type === "script" && proxyUrl) {
+        if (proxyUrl) {
           const finalProxyUrl = new URL(location.origin + proxyUrl);
           finalProxyUrl.searchParams.append("url", url.href);
           return finalProxyUrl;
