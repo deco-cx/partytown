@@ -2,11 +2,12 @@ import Script from "../Script.tsx";
 
 interface Props {
   trackingId: string;
+  dangerouslyRunOnMainThread?: boolean;
 }
 
 declare global {
   interface Window {
-    gtag: (...args: unknown[]) => void
+    gtag: (...args: unknown[]) => void;
   }
 }
 
@@ -29,11 +30,14 @@ function snippet(trackingId: string) {
   }
 }
 
-const GoogleTagManager = ({ trackingId = "" }: Props) => (
+const GoogleTagManager = (
+  { trackingId = "", dangerouslyRunOnMainThread = false }: Props,
+) => (
   <>
     <Script
       id={`gtag-script-${trackingId}`}
       forward={["dataLayer.push"]}
+      type={dangerouslyRunOnMainThread ? "text/javascript" : undefined}
       src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
     />
     <Script
