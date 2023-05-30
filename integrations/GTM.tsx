@@ -8,7 +8,9 @@ interface OnPremises {
   src: string;
 }
 
-type Props = Hosted | OnPremises;
+type Props = (Hosted | OnPremises) & {
+  dangerouslyRunOnMainThread?: boolean;
+};
 
 declare global {
   interface Window {
@@ -46,7 +48,12 @@ const GoogleTagManager = (props: Props) => {
 
   return (
     <>
-      <Script id={`gtm-script-${id}`} forward={["dataLayer.push"]} src={src} />
+      <Script
+        id={`gtm-script-${id}`}
+        type={props.dangerouslyRunOnMainThread ? "text/javascript" : undefined}
+        forward={["dataLayer.push"]}
+        src={src}
+      />
       <Script
         id={`gtm-script-global-${id}`}
         type="module"
