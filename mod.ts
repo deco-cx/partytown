@@ -92,7 +92,12 @@ const partytown = (
         }
         return url;
       };
-      ${partytownSnippet()}
+      
+      if (window === top) {
+        ${partytownSnippet()}
+      } else {
+        console.info("Partytown snippet not laoded due to being inside an iframe");
+      }
     }`,
     },
     render(ctx) {
