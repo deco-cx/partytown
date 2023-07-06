@@ -1,6 +1,7 @@
 {
   "tasks": {
-    "check": "deno fmt && deno lint && deno check mod.ts"
+    "check": "deno fmt && deno lint && deno check mod.ts",
+    "release": "deno eval 'import \"https://denopkg.com/deco-cx/deco/scripts/release.ts\"'"
   },
   "importMap": "./import_map.json",
   "compilerOptions": {
