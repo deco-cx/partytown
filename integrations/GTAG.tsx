@@ -12,8 +12,7 @@ declare global {
 }
 
 function snippet(trackingId: string) {
-  // It is safe to .push in datalayer in here because partytown have already
-  // run and made dataLayer.push available in window
+  window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () {
     window.dataLayer.push(arguments);
   };
@@ -44,7 +43,7 @@ const GoogleTagManager = (
       id={`gtag-script-global-${trackingId}`}
       type="module"
       dangerouslySetInnerHTML={{
-        __html: `(${snippet})(${trackingId});`,
+        __html: `(${snippet})("${trackingId}");`,
       }}
     />
   </>
