@@ -27,6 +27,8 @@ function snippet() {
     "gtm.start": new Date().getTime(),
     event: "gtm.js",
   });
+
+  console.log(window.dataLayer);
 }
 
 const isOnPremises = (props: Props): props is OnPremises =>
@@ -37,20 +39,21 @@ const GoogleTagManager = (props: Props) => {
   const src = isOnPremises(props)
     ? props.src
     : `https://www.googletagmanager.com/gtm.js?id=${props.trackingId}`;
+  const type = props.dangerouslyRunOnMainThread
+    ? "text/javascript"
+    : "text/partytown";
 
   return (
     <>
       <Script
         id={`gtm-script-${id}`}
-        type={props.dangerouslyRunOnMainThread
-          ? "text/javascript"
-          : "text/partytown"}
+        type={type}
         forward={["dataLayer.push"]}
         src={src}
       />
       <Script
         id={`gtm-script-global-${id}`}
-        type="module"
+        type={type}
         dangerouslySetInnerHTML={{ __html: `(${snippet})();` }}
       />
     </>

@@ -22,22 +22,28 @@ function snippet(trackingId: string) {
 
 const GoogleTagManager = (
   { trackingId = "", dangerouslyRunOnMainThread = false }: Props,
-) => (
-  <>
-    <Script
-      id={`gtag-script-${trackingId}`}
-      forward={["dataLayer.push"]}
-      type={dangerouslyRunOnMainThread ? "text/javascript" : "text/partytown"}
-      src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
-    />
-    <Script
-      id={`gtag-script-global-${trackingId}`}
-      type="module"
-      dangerouslySetInnerHTML={{
-        __html: `(${snippet})("${trackingId}");`,
-      }}
-    />
-  </>
-);
+) => {
+  const type = dangerouslyRunOnMainThread
+    ? "text/javascript"
+    : "text/partytown";
+
+  return (
+    <>
+      <Script
+        id={`gtag-script-${trackingId}`}
+        forward={["dataLayer.push"]}
+        type={type}
+        src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
+      />
+      <Script
+        id={`gtag-script-global-${trackingId}`}
+        type={type}
+        dangerouslySetInnerHTML={{
+          __html: `(${snippet})("${trackingId}");`,
+        }}
+      />
+    </>
+  );
+};
 
 export default GoogleTagManager;
