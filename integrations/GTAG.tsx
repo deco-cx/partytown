@@ -16,17 +16,8 @@ function snippet(trackingId: string) {
   window.gtag = window.gtag || function () {
     window.dataLayer.push(arguments);
   };
-
-  function init() {
-    window.gtag("js", new Date());
-    window.gtag("config", trackingId);
-  }
-
-  if (document.readyState === "complete") {
-    init();
-  } else {
-    addEventListener("load", init);
-  }
+  window.gtag("js", new Date());
+  window.gtag("config", trackingId);
 }
 
 const GoogleTagManager = (

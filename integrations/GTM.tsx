@@ -23,18 +23,10 @@ function snippet() {
 
   // It is safe to .push in datalayer in here because partytown have already
   // run and made dataLayer.push available in window
-  function init() {
-    window.dataLayer.push({
-      "gtm.start": new Date().getTime(),
-      event: "gtm.js",
-    });
-  }
-
-  if (document.readyState === "complete") {
-    init();
-  } else {
-    addEventListener("load", init);
-  }
+  window.dataLayer.push({
+    "gtm.start": new Date().getTime(),
+    event: "gtm.js",
+  });
 }
 
 const isOnPremises = (props: Props): props is OnPremises =>
