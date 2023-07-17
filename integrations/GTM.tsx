@@ -27,8 +27,6 @@ function snippet() {
     "gtm.start": new Date().getTime(),
     event: "gtm.js",
   });
-
-  console.log(window.dataLayer);
 }
 
 const isOnPremises = (props: Props): props is OnPremises =>
