@@ -23,18 +23,10 @@ function snippet() {
 
   // It is safe to .push in datalayer in here because partytown have already
   // run and made dataLayer.push available in window
-  function init() {
-    window.dataLayer.push({
-      "gtm.start": new Date().getTime(),
-      event: "gtm.js",
-    });
-  }
-
-  if (document.readyState === "complete") {
-    init();
-  } else {
-    addEventListener("load", init);
-  }
+  window.dataLayer.push({
+    "gtm.start": new Date().getTime(),
+    event: "gtm.js",
+  });
 }
 
 const isOnPremises = (props: Props): props is OnPremises =>
@@ -45,20 +37,21 @@ const GoogleTagManager = (props: Props) => {
   const src = isOnPremises(props)
     ? props.src
     : `https://www.googletagmanager.com/gtm.js?id=${props.trackingId}`;
+  const type = props.dangerouslyRunOnMainThread
+    ? "text/javascript"
+    : "text/partytown";
 
   return (
     <>
       <Script
         id={`gtm-script-${id}`}
-        type={props.dangerouslyRunOnMainThread
-          ? "text/javascript"
-          : "text/partytown"}
+        type={type}
         forward={["dataLayer.push"]}
         src={src}
       />
       <Script
         id={`gtm-script-global-${id}`}
-        type="module"
+        type={type}
         dangerouslySetInnerHTML={{ __html: `(${snippet})();` }}
       />
     </>
