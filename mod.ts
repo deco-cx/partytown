@@ -22,7 +22,7 @@ declare global {
 
 function snippet(state: PartytownConfig) {
   const params = new URLSearchParams(window.location.search);
-  const disabled = localStorage?.getItem("disablePartytown");
+  const disabled = localStorage.getItem("disablePartytown");
 
   const getState = (): PartytownConfig => {
     if (params.has("disablePartytown") || params.has("gtm_debug") || disabled) {
@@ -36,7 +36,7 @@ function snippet(state: PartytownConfig) {
           document.body.appendChild(node);
         });
 
-      localStorage?.setItem("disablePartytown", "true");
+      localStorage.setItem("disablePartytown", "true");
       console.log(
         'Disabling partytown. To enable it again, run: localStorage.setItem("disablePartytown", "")',
       );
@@ -96,7 +96,7 @@ const partytown = (
       if (window === top) {
         ${partytownSnippet()}
       } else {
-        console.info("Partytown snippet not laoded due to being inside an iframe");
+        console.info("Partytown snippet not loaded due to being inside an iframe");
       }
     }`,
     },
