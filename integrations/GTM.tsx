@@ -46,7 +46,7 @@ const GoogleTagManager = (props: Props) => {
       <Script
         id={`gtm-script-${id}`}
         type={type}
-        forward={props.dangerouslyRunOnMainThread ? [] : ["dataLayer.push"]}
+        forward={["dataLayer.push"]}
         src={src}
       />
       <Script

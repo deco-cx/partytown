@@ -31,7 +31,7 @@ const GoogleTagManager = (
     <>
       <Script
         id={`gtag-script-${trackingId}`}
-        forward={dangerouslyRunOnMainThread ? [] : ["dataLayer.push"]}
+        forward={["dataLayer.push"]}
         type={type}
         src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
       />
