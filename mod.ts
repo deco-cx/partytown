@@ -32,7 +32,7 @@ function snippet(state: PartytownConfig) {
         .querySelectorAll('script[type="text/partytown"]')
         .forEach((node) => {
           node.remove();
-          node.setAttribute("type", "text/javascript");
+          node.setAttribute("type", "module");
           document.body.appendChild(node);
         });
 

@@ -23,9 +23,7 @@ function snippet(trackingId: string) {
 const GoogleTagManager = (
   { trackingId = "", dangerouslyRunOnMainThread = false }: Props,
 ) => {
-  const type = dangerouslyRunOnMainThread
-    ? "text/javascript"
-    : "text/partytown";
+  const type = dangerouslyRunOnMainThread ? "module" : "text/partytown";
 
   return (
     <>

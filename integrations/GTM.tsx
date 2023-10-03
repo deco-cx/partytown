@@ -37,9 +37,7 @@ const GoogleTagManager = (props: Props) => {
   const src = isOnPremises(props)
     ? props.src
     : `https://www.googletagmanager.com/gtm.js?id=${props.trackingId}`;
-  const type = props.dangerouslyRunOnMainThread
-    ? "text/javascript"
-    : "text/partytown";
+  const type = props.dangerouslyRunOnMainThread ? "module" : "text/partytown";
 
   return (
     <>
