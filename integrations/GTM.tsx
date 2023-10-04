@@ -37,13 +37,16 @@ const GoogleTagManager = (props: Props) => {
   const src = isOnPremises(props)
     ? props.src
     : `https://www.googletagmanager.com/gtm.js?id=${props.trackingId}`;
-  const type = props.dangerouslyRunOnMainThread ? "module" : "text/partytown";
+  const type = props.dangerouslyRunOnMainThread
+    ? "text/javascript"
+    : "text/partytown";
 
   return (
     <>
       <Script
         id={`gtm-script-${id}`}
         type={type}
+        async={props.dangerouslyRunOnMainThread ? true : undefined}
         forward={["dataLayer.push"]}
         src={src}
       />
