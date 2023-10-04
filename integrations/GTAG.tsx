@@ -23,7 +23,9 @@ function snippet(trackingId: string) {
 const GoogleTagManager = (
   { trackingId = "", dangerouslyRunOnMainThread = false }: Props,
 ) => {
-  const type = dangerouslyRunOnMainThread ? "module" : "text/partytown";
+  const type = dangerouslyRunOnMainThread
+    ? "text/javascript"
+    : "text/partytown";
 
   return (
     <>
@@ -31,6 +33,7 @@ const GoogleTagManager = (
         id={`gtag-script-${trackingId}`}
         forward={["dataLayer.push"]}
         type={type}
+        async={dangerouslyRunOnMainThread ? true : undefined}
         src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
       />
       <Script
