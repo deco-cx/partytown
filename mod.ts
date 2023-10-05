@@ -61,6 +61,15 @@ function snippet(state: PartytownConfig) {
   window.partytown = getState();
 }
 
+/**
+ * Somehow, the partytown comment breaks the building process
+ * for newer versions of fresh
+ */
+const snippetNoComments = partytownSnippet().replace(
+  /\/\*.+?\*\/|\/\/.*(?=[\n\r])/g,
+  "",
+);
+
 const partytown = (
   { copyFiles, proxyUrl, mainWindowAccessors }: Options = {},
 ): Plugin => {
@@ -95,7 +104,7 @@ const partytown = (
       };
       
       if (window === top) {
-        ${partytownSnippet()}
+        ${snippetNoComments}
       } else {
         console.info("Partytown snippet not loaded due to being inside an iframe");
       }
