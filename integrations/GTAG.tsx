@@ -3,6 +3,10 @@ import Script from "../Script.tsx";
 interface Props {
   trackingId: string;
   dangerouslyRunOnMainThread?: boolean;
+  /**
+   * @description prevent forward to partytown
+   */
+  preventCollect?: boolean;
 }
 
 declare global {
@@ -21,7 +25,8 @@ function snippet(trackingId: string) {
 }
 
 const GoogleTagManager = (
-  { trackingId = "", dangerouslyRunOnMainThread = false }: Props,
+  { trackingId = "", dangerouslyRunOnMainThread = false, preventCollect }:
+    Props,
 ) => {
   const type = dangerouslyRunOnMainThread
     ? "text/javascript"
@@ -31,7 +36,9 @@ const GoogleTagManager = (
     <>
       <Script
         id={`gtag-script-${trackingId}`}
-        forward={["dataLayer.push"]}
+        forward={dangerouslyRunOnMainThread || preventCollect
+          ? undefined
+          : ["dataLayer.push"]}
         type={type}
         async={dangerouslyRunOnMainThread ? true : undefined}
         src={`https://www.googletagmanager.com/gtag/js?id=${trackingId}`}
