@@ -13,7 +13,7 @@ type Props = (Hosted | OnPremises) & {
   /**
    * @description prevent forward to partytown
    */
-  preventCollect?: boolean;
+  preventForward?: boolean;
 };
 
 declare global {
@@ -51,7 +51,7 @@ const GoogleTagManager = (props: Props) => {
         id={`gtm-script-${id}`}
         type={type}
         async={props.dangerouslyRunOnMainThread ? true : undefined}
-        forward={props.dangerouslyRunOnMainThread || props.preventCollect
+        forward={props.dangerouslyRunOnMainThread || props.preventForward
           ? undefined
           : ["dataLayer.push"]}
         src={src}

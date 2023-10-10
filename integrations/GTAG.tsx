@@ -6,7 +6,7 @@ interface Props {
   /**
    * @description prevent forward to partytown
    */
-  preventCollect?: boolean;
+  preventForward?: boolean;
 }
 
 declare global {
@@ -25,7 +25,7 @@ function snippet(trackingId: string) {
 }
 
 const GoogleTagManager = (
-  { trackingId = "", dangerouslyRunOnMainThread = false, preventCollect }:
+  { trackingId = "", dangerouslyRunOnMainThread = false, preventForward }:
     Props,
 ) => {
   const type = dangerouslyRunOnMainThread
@@ -36,7 +36,7 @@ const GoogleTagManager = (
     <>
       <Script
         id={`gtag-script-${trackingId}`}
-        forward={dangerouslyRunOnMainThread || preventCollect
+        forward={dangerouslyRunOnMainThread || preventForward
           ? undefined
           : ["dataLayer.push"]}
         type={type}
